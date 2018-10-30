@@ -1,16 +1,17 @@
 <?php
     require 'session.php';
-    require 'db.php';
-    require 'dbPDO.php';
-?>
+    if ($_SESSION['isadmin']!=1) {
+        header('Location: analyzers_list.php');
+    }
+    
+ ?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    
     <meta charset="UTF-8">
-    <title>ESMS | Analyzers Report</title>
+    <title>ESMS | Users List</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -138,7 +139,7 @@
                                 <span class="title">Dashboard</span>
                             </a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="#">
                                 <i class="livicon" data-name="medal" data-size="18" data-c="#00bc8c" data-hc="#00bc8c" data-loop="true"></i>
                                 <span class="title">Analyzers</span>
@@ -161,7 +162,7 @@
                                             Analyzers Graphs
                                     </a>
                                 </li>
-                                <li  class="active" id="active">
+                                <li>
                                     <a href="allAnalyzersReport.php">
                                         <i class="fa fa-angle-double-right"></i>
                                             Analyzers Report
@@ -193,9 +194,9 @@
                                 </ul>
                             
                         </li>
-                        <li>
+                        <li class="active" id="active">
                             <a href="generate_bill.php">
-                                <i class="livicon" data-name="doc-portrait" data-size="18" data-c="#418BCA" data-hc="#418BCA" data-loop="true"></i>
+                                <i class="livicon" data-name="home" data-size="18" data-c="#418BCA" data-hc="#418BCA" data-loop="true"></i>
                                 <span class="title">Generate Bill</span>
                             </a>
                         </li>
@@ -214,22 +215,21 @@
         <aside class="right-side">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-                <h1>Analyzer Report</h1>
+                <h1>Users</h1>
                 <ol class="breadcrumb">
                     <li>
                         <a href="index.php">
                             <i class="livicon" data-name="home" data-size="14" data-color="#000"></i> Dashboard
                         </a>
                     </li>
-                    <li>
-                        <a href="analyzers_list.<?php  ?>">Analyzers</a>
-                    </li>
-                    <li class="active">Analyzer Report</li>
+                    
+                    <li class="active">Generate Bill</li>
                 </ol>
             </section>
-                <!--To retrieve list of analyzers-->
-                <div>
-                    <button>Print Report</button>
+                <div class="card-header">
+   
+                    <a style="float: left;" class="nav-link btn btn-info" href="generate_new_bill.php">Generate New Bill</a>
+
                 </div>
                 <br>
                 <br>
@@ -240,72 +240,29 @@
                     <div class="panel panel-primary ">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <i class="livicon" data-name="user" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i>All Analyzers Report
+                                <i class="livicon" data-name="document" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> Bill History
                             </h4>
                         </div>
                         <br />
-                        <div class="panel-body"> 
-                            
-                                    
-                                <h2 style="text-align: center;"> All Analyzers Report
-                                    
-                                </h2>
-                            
-                                
-                            
+                        <div class="panel-body">
                             <table class="table table-bordered " id="table">
-                                <?php
-                                //Using PDO Method
-                                $sql = "SELECT id,name,analyzerunit FROM analyzer ORDER BY id DESC";
-                                $statement = $connection->prepare($sql);
-                                $statement->execute();
-                                $analyzerDetails = $statement->fetchAll(PDO::FETCH_OBJ);
-                                ?>
                                 <thead>
                                     <tr class="filters">
-                                        <th style="text-align: center;">Date</th>
-                                        <th style="text-align: center;">Month Number</th>
-                                        <?php foreach($analyzerDetails as $analyzerD): ?>
-                                        <th style="text-align: center;"><?= $analyzerD->name; ?> - <?= $analyzerD->analyzerunit; ?> </th>
-                                        <?php endforeach; ?>
+                                        <th>Date From</th>
+                                        <th>Date to</th>
+                                        <th>Due Date</th>
+                                        <th>Note</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <?php
-                                
-                    
-                        //SELECT analyzer.id, analyzer.name,analyzer.analyzerunit, analyzerreading.date, analyzerreading.monthnumber,analyzerreading.valueunits FROM analyzer,analyzerreading WHERE analyzer.id=analyzerreading.analyzerid ORDER BY analyzerreading.monthnumber ASC
-
-                                //For Value Units
-                                $sqlVU = "SELECT DATE_FORMAT(date,'%d-%m-%y') as dateOnly,monthnumber,valueunits FROM analyzerreading";
-                                $resultVU = mysqli_query($conn, $sqlVU);
-                                
-                                ?>
                                 <tbody>
-                                    <?php
-                                        $check = 0;
-                                while($rowVU = mysqli_fetch_assoc($resultVU)){ ?>
-                                    
-                                    <?php
-                                        if ($check == 0) {
-                                        
-                                    ?>
-                                      <tr>
-                                        <td style="text-align: center;"><?= $rowVU["dateOnly"]; ?></td>
-                                        <td style="text-align: center;"><?= $rowVU["monthnumber"]; ?></td>
-                                    <?php
-                                        }
-                                    ?>
-                                        <td style="text-align: center;"><?= $rowVU["valueunits"]; ?></td>
-
-                                    <?php
-                                    $check = $check+1;
-                                    if ($check==5) {
-                                        $check=0;
-                                        ?></tr>
-                                        <?php
-                                    }
-                                } 
-                                ?>                                 
+                                    <tr>
+                                        <td>01-10-2018</td>
+                                        <td>15-10-2018</td>
+                                        <td>20-10-2018</td>
+                                        <td>Comittee meeting will take place at Alpha Restaurant on October 17 at 7 pm.</td>
+                                        <td><a href="#" class="btn btn-info">Print</a></td>
+                                    </tr>                              
                                 </tbody>
                             </table>
 
@@ -351,20 +308,7 @@
     $(document).ready(function() {
         $('#table').dataTable();
     });
-    
-  function printData()
-{
-   var divToPrint=document.getElementById("table");
-   newWin= window.open("");
-   newWin.document.write(divToPrint.outerHTML);
-   newWin.print();
-   newWin.close();
-}
-
-$('button').on('click',function(){
-printData();
-})
-</script>
+    </script>
     <!-- end of page level js -->
 </body>
 

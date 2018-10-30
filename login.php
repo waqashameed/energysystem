@@ -1,4 +1,12 @@
-<?php include('server.php') ?>
+<?php
+ include('server.php');
+if(isset($_REQUEST['errormsg']) && $_REQUEST['errormsg'] == 'disabled'){
+	?><script type="text/javascript">
+		alert("Your account is disabled, please contact Administrator.")
+	</script>
+	<?php
+}
+  ?>
 <!DOCTYPE html>
 <html>
 <head>

@@ -65,6 +65,13 @@
 			$results = mysqli_query($db, $query);
 			if (mysqli_num_rows($results) == 1) {
 				$rows=mysqli_fetch_assoc($results);
+				$status = $rows['isdisabled'];
+				if ($status != 0) {
+					header('location: login.php?errormsg=disabled');
+					//Don't remove 2 line below, functionalty fails otherwise.
+					echo "here";
+					die;
+				}
 				$_SESSION['username'] = $userEmail;
 				$_SESSION['isadmin'] = $rows['isadmin'];
 				$_SESSION['analyzerid'] = $rows['analyzerid'];
