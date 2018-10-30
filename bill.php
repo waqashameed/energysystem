@@ -1,4 +1,5 @@
 <?php
+//Testing
 require 'session.php';
 	$id = $_GET['id'];
 if ($_SESSION['isadmin']!=1) {

@@ -251,6 +251,7 @@
                                         <th>Name</th>
                                         <th>User E-mail</th>
                                         <th>Created on</th>
+                                        <th>Current Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -260,14 +261,44 @@
                                         <td><?= $user->username; ?></td>
                                         <td><?= $user->email; ?></td>
                                         <td><?= $user->creationdate; ?></td>
+                                        <?php if ($user->isdisabled == 0) {
+                                            ?>
+                                            <td>
+                                                Active
+                                            </td>
+                                            <?php
+                                        }
+                                        else
+                                        {
+                                            ?>
+                                            <td>
+                                                Disabled
+                                            </td>
+                                            <?php
+                                         
+                                        }?>
                                   <!--       <td><?= $person->status; ?></td> -->
                                         <td>
-                                            <a href="view_user.html">
-                                                <i class="livicon" data-name="info" data-size="18" data-loop="true" data-c="#428BCA" data-hc="#428BCA" title="view user"></i>
+                                            <a href="edit_user.php?id=<?= $user->id ?>" class="btn btn-info">Edit</a>
+
+
+                                            <?php if ($user->isdisabled == 0) {
+                                                # code...
+                                             ?>
+                                            <a onclick="return confirm('Are you sure you want to disable this user?')" href="disable.php?id=<?= $user->id ?>" class='btn btn-danger'>
+                                                Disable
                                             </a>
-                                            <a href="delete.php?id=<?= $user->id ?>" data-toggle="modal" data-target="#delete_confirm">
-                                                <i class="livicon" data-name="user-remove" data-size="18" data-loop="true" data-c="#f56954" data-hc="#f56954" title="delete user"></i>
+                                            <?php
+                                             }
+                                             else{
+                                                ?>
+                                                <a href="enable_user.php?id=<?= $user->id ?>" class='btn btn-success'>
+                                                Enable
                                             </a>
+                                            <?php
+                                             }
+                                             ?>
+
                                         </td>
                                       </tr>
                                     <?php endforeach; ?>                                 
