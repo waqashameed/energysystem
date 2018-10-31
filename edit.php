@@ -3,12 +3,20 @@
 
 require 'session.php';
 require 'db.php';
-$id = $_GET['id'];
-if ($_SESSION['isadmin']!=1) {
+$id=0;
+if (isset($_GET['id'])) {
+ $id = $_GET['id'];
+}
+
+if ($_SESSION['isadmin']!=0) {
     if ($id != $_SESSION['analyzerid']) {
             header('Location: edit.php?id='.$_SESSION['analyzerid']);
         }
+    
   }
+  else{
+      header('Location: analyzers_list.php');
+    }
 $sql = "SELECT * FROM analyzer WHERE id='".$id."'";
 $result = mysqli_query($conn, $sql);
 

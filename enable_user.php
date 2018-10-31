@@ -24,7 +24,15 @@ if (isset($_POST['enableUserBtn'])) {
   $sql = "UPDATE users SET analyzerid = '".$analyzerid."', isdisabled = '".$isdisabled."' WHERE id = '".$id."'";
   
   if (mysqli_query($conn, $sql)) {
-  header('Location: users_list.php?enableMsg=success');
+    $isavailable=0;
+  $sqla="UPDATE analyzer SET isavailable=0 WHERE id= '".$analyzerid."'";
+    if(mysqli_query($conn, $sqla)){
+      header('Location: users_list.php?enableMsg=success'); 
+    }
+    else {
+      header('Location: users_list.php?enableMsg=failure');
+      echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
   } 
   else {
     header('Location: users_list.php?enableMsg=failure');
@@ -67,15 +75,21 @@ if (isset($_POST['enableUserBtn'])) {
         </div>
         <?php
           require 'dbPDO.php';
-          $sql = 'SELECT r.id,r.name,u.analyzerid FROM analyzer r LEFT JOIN users u ON u.analyzerid = r.id';
+          $sql = 'SELECT r.id,r.name,u.analyzerid FROM analyzer r LEFT JOIN users u ON u.analyzerid = r.id WHERE r.isavailable=1';
           $statement = $connection->prepare($sql);
           $statement->execute();
           $analyzers = $statement->fetchAll(PDO::FETCH_OBJ);
+          if (count($analyzers) == 0) {
+            echo $analyzers;
+            header('location: users_list.php?errormsg=analyzerNotAvailable');
+          }
+            
         ?>
         <div>
           <label for="sel1">Select Analyzer :</label>
       <select class="form-control" name="analyzer" id="analyzer">
         <?php foreach($analyzers as $analyzer): 
+          
             if(is_null($analyzer->analyzerid))
             {
         ?>

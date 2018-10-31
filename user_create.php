@@ -33,6 +33,11 @@ if ($_SESSION['isadmin']!=1) {
         </div>
 
         <div class="form-group">
+          <label for="contactnumber">Contact Number</label>
+          <input type="Number" name="contactnumber" id="contactnumber" class="form-control">
+        </div>
+
+        <div class="form-group">
           <label for="email">Email</label>
           <input type="email" name="email" id="email" class="form-control">
         </div>

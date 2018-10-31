@@ -1,10 +1,17 @@
 <?php
     require 'session.php';
+if(isset($_REQUEST['errormsg']) && $_REQUEST['errormsg'] == 'analyzerNotAvailable'){
+    ?><script type="text/javascript">
+        alert("No analyzer available, please add new analyzer first or disable any existing.")
+    </script>
+    <?php
+}
+  
     if ($_SESSION['isadmin']!=1) {
         header('Location: analyzers_list.php');
     }
     require 'dbPDO.php';
-    $sql = 'SELECT * FROM users';
+    $sql = 'SELECT u.id as uid,u.username, u.contactnumber, u.email, u.creationdate, a.name, a.id as aid, u.isdisabled, u.isadmin FROM users as u LEFT JOIN analyzer as a ON a.id=u.analyzerid';
     $statement = $connection->prepare($sql);
     $statement->execute();
     $allUsers = $statement->fetchAll(PDO::FETCH_OBJ);
@@ -255,9 +262,11 @@
                                 <thead>
                                     <tr class="filters">
                                         <th>Name</th>
-                                        <th>User E-mail</th>
+                                        <th>Contact Number</th>
+                                        <th>E-mail</th>
                                         <th>Created on</th>
-                                        <th>Current Status</th>
+                                        <th>Status</th>
+                                        <th>Analyzer</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -265,6 +274,7 @@
                                     <?php foreach($allUsers as $user): ?>
                                       <tr>
                                         <td><?= $user->username; ?></td>
+                                        <td><?= $user->contactnumber; ?></td>
                                         <td><?= $user->email; ?></td>
                                         <td><?= $user->creationdate; ?></td>
                                         <?php if ($user->isdisabled == 0) {
@@ -283,22 +293,37 @@
                                             <?php
                                          
                                         }?>
+                                        <td>
+                                            <?php
+                                                if (empty($user->name)) {
+                                                    ?>
+                                                    <p>N/A</p>
+                                                    <?php
+                                                }
+                                                else {
+                                                    ?>
+                                                    <?= $user->name; ?>
+                                                <?php
+                                                }
+                                            ?>
+                                        </td>
                                   <!--       <td><?= $person->status; ?></td> -->
                                         <td>
-                                            <a href="edit_user.php?id=<?= $user->id ?>" class="btn btn-info">Edit</a>
+                                            <a href="edit_user.php?id=<?= $user->uid ?>" class="btn btn-info">Edit</a>
 
 
                                             <?php if ($user->isdisabled == 0) {
-                                                # code...
+                                                //Problem with enable button
+                                                
                                              ?>
-                                            <a onclick="return confirm('Are you sure you want to disable this user?')" href="disable.php?id=<?= $user->id ?>" class='btn btn-danger'>
+                                            <a onclick="return confirm('Are you sure you want to disable this user?')" href="disable.php?id=<?=$user->uid?>&aid=<?=$user->aid?>" class='btn btn-danger'>
                                                 Disable
                                             </a>
                                             <?php
                                              }
                                              else{
                                                 ?>
-                                                <a href="enable_user.php?id=<?= $user->id ?>" class='btn btn-success'>
+                                                <a href="enable_user.php?id=<?=$user->uid;?>" class='btn btn-success'>
                                                 Enable
                                             </a>
                                             <?php
@@ -306,6 +331,7 @@
                                              ?>
 
                                         </td>
+
                                       </tr>
                                     <?php endforeach; ?>                                 
                                 </tbody>
@@ -313,7 +339,7 @@
 
 
                             <!-- Modal for showing delete confirmation -->
-                            <div class="modal fade" id="delete_confirm" tabindex="-1" role="dialog" aria-labelledby="user_delete_confirm_title" aria-hidden="true">
+                           <!-- <div class="modal fade" id="delete_confirm" tabindex="-1" role="dialog" aria-labelledby="user_delete_confirm_title" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -333,6 +359,7 @@
                                     </div>
                                 </div>
                             </div>
+                        -->
                         </div>
                     </div>
                 </div>

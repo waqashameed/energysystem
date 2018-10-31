@@ -342,8 +342,15 @@
                                         <td><?= $analyzer->analyzerunit; ?></td>
                                   <!--       <td><?= $person->status; ?></td> -->
                                         <td>
-                                            <a href="edit.php?id=<?= $analyzer->id ?>" class="btn btn-info">Edit</a>
+                                            <?php
+                                            if ($_SESSION['isadmin']!=0) {
+                                                ?>
+                                                <a href="edit.php?id=<?= $analyzer->id ?>" class="btn btn-info">Edit</a>
                                             <a onclick="return confirm('Are you sure you want to delete this entry?')" href="delete.php?id=<?= $analyzer->id ?>" class='btn btn-danger'>Delete</a>
+                                            <?php
+                                            }
+                                            ?>
+                                            
                                             <a href="report.php?id=<?= $analyzer->id ?>" class="btn btn-primary">Report</a>
                                             <a href="form_examples.php?id=<?= $analyzer->id ?>" class="btn btn-primary">Graph</a>
                                             <a href="bill.php?id=<?= $analyzer->id ?>" class="btn btn-primary">Print Bill</a>
