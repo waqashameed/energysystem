@@ -244,25 +244,39 @@
                             </h4>
                         </div>
                         <br />
+
                         <div class="panel-body">
                             <table class="table table-bordered " id="table">
                                 <thead>
                                     <tr class="filters">
-                                        <th>Date From</th>
-                                        <th>Date to</th>
+                                        <th>Month</th>
+                                        <th>Year</th>
+                                        <th>Issue Date</th>
                                         <th>Due Date</th>
                                         <th>Note</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php
+                                        require_once 'db.php';
+                                        $sql="SELECT * FROM `bill` GROUP BY month";
+                                        $result = mysqli_query($conn, $sql);
+                                        while($row = mysqli_fetch_assoc($result)){
+                                            //SELECT * FROM bill WHERE month<month(now()) AND month>=month(now())-6 AND analyzerid=29 Query for last six months.
+                                            //SELECT * FROM bill b JOIN analyzer a ON b.analyzerid=a.id WHERE b.issuedate='2018-11-04' AND b.analyzerid=$_SESSION['id'] Query for bill details
+                                    ?>
                                     <tr>
-                                        <td>01-10-2018</td>
-                                        <td>15-10-2018</td>
-                                        <td>20-10-2018</td>
-                                        <td>Comittee meeting will take place at Alpha Restaurant on October 17 at 7 pm.</td>
-                                        <td><a href="#" class="btn btn-info">Print</a></td>
-                                    </tr>                              
+                                        <td><?=$row['month']?></td>
+                                        <td><?=$row['year']?></td>
+                                        <td><?=$row['issuedate']?></td>
+                                        <td><?=$row['duedate']?></td>
+                                        <td><?=$row['note']?></td>
+                                        <td><a href="bill.php?issuedate=<?= $row['issuedate']?>" class="btn btn-info">Print</a></td>
+                                    </tr>     
+                                    <?php
+                                        }
+                                    ?>                         
                                 </tbody>
                             </table>
 

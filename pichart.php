@@ -1,5 +1,5 @@
 <?php 
-	require 'session.php';
+    require 'session.php';
 
 ?>
 <!DOCTYPE html>
@@ -11,48 +11,12 @@
     <link href="vendors/c3/c3.min.css" rel="stylesheet" type="text/css" />
     <link href="vendors/morrisjs/morris.css" rel="stylesheet" type="text/css" />
     <link href="css/pages/piecharts.css" rel="stylesheet" type="text/css" />
-	<script>
+    <script>
 window.onload = function () {
-    function Last7Days () {
-    var result = [];
-    for (var i=0; i<7; i++) {
-        var d = new Date();
-        d.setDate(d.getDate() - i);
-        result.push( formatDate(d) )
-    }
-
-    return(result.join(','));
-    }
-
-    var data = [
-      { y: '2018-08-06', a: 1, b: 10, c:15},
-      { y: '2018-08-05', a: 65,  b: 75, c:80},
-      { y: '2018-08-04', a: 50,  b: 50, c:15},
-      { y: '2018-08-03', a: 75,  b: 60, c:15},
-      { y: '2018-08-02', a: 80,  b: 65, c:15},
-      { y: '2018-08-01', a: 90,  b: 70, c:15}
-    ],
-    config = {
-      data: data,
-      xkey: 'y',
-      ykeys: ['a', 'b','c'],
-      labels: ['A1', 'A2', 'A3'],
-      fillOpacity: 0.6,
-      hideHover: 'auto',
-      behaveLikeLine: true,
-      resize: true,
-      pointFillColors:['#ffffff'],
-      pointStrokeColors: ['black'],
-      lineColors:['gray','red','blue']
-  };
-    config.element = 'line-chart';
-    Morris.Line(config);
-
-//Pie Chart
     var pie = new d3pie("#pie3", {
         size: {
             pieOuterRadius: "100%",
-            canvasHeight: 400
+            canvasHeight: 350
         },
         data: {
             sortOrder: "value-asc",
@@ -63,7 +27,7 @@ window.onload = function () {
                 label: "Other birds"
             },
             content: [
-                { label: "Bushtit", value: 20, color:"#418BCA" },
+                { label: "Bushtit", value: 5, color:"#418BCA" },
                 { label: "Chickadee", value: 2, color:"#01BC8C"},
                 { label: "Elephants", value: 6, color:"#F89A14"},
                 { label: "Killdeer", value: 3, color:"#67C5DF"},
@@ -91,36 +55,36 @@ window.onload = function () {
         }
     });
 }
-
+//Pie Chart
 
 </script>
-	
+    
 </head>
 <body>
 
-	<div class="content">
+    <div class="content">
 
-		<!-- notification message -->
-		<?php if (isset($_SESSION['success'])) : ?>
-			<div class="error success" >
-				<h3>
-					<?php 
-						echo $_SESSION['success']; 
-						unset($_SESSION['success']);
-					?>
-				</h3>
-			</div>
-		<?php endif ?>
+        <!-- notification message -->
+        <?php if (isset($_SESSION['success'])) : ?>
+            <div class="error success" >
+                <h3>
+                    <?php 
+                        echo $_SESSION['success']; 
+                        unset($_SESSION['success']);
+                    ?>
+                </h3>
+            </div>
+        <?php endif ?>
 
-		<!-- logged in user information -->
-		<?php  if (isset($_SESSION['username'])) : ?>
-		
+        <!-- logged in user information -->
+        <?php  if (isset($_SESSION['username'])) : ?>
+        
 
-		
+        
 
-		<?php endif ?>
-	</div>
-		
+        <?php endif ?>
+    </div>
+        
 
 
 <head>
@@ -154,7 +118,7 @@ window.onload = function () {
 <body class="skin-josh">
     <header class="header">
         <a href="index.php" class="logo">
-        	<h1>ESMS</h1>
+            <h1>ESMS</h1>
            <!--  <img src="img/logo.png" alt="Logo"> -->
         </a>
         <nav class="navbar navbar-static-top" role="navigation">
@@ -337,11 +301,11 @@ window.onload = function () {
        <label class="label label-success">Line Chart</label>
       <div id="line-chart"></div>
       <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
-                                    <i class="livicon" data-name="piechart" data-size="16" data-loop="true" data-c="#fff" data-hc="#fff"></i> Pie Chart for Consumptions
+                                    <i class="livicon" data-name="piechart" data-size="16" data-loop="true" data-c="#fff" data-hc="#fff"></i> D3 Pie chart with small segment
                                 </h3>
                                 <span class="pull-right">
                                     <i class="glyphicon glyphicon-chevron-up showhide clickable"></i>
@@ -349,7 +313,7 @@ window.onload = function () {
                                 </span>
                             </div>
                             <div class="panel-body">
-                                <div id="pie3"  style="text-align: center;"></div>
+                                <div id="pie3"></div>
                             </div>
                         </div>
                     </div>

@@ -1,47 +1,50 @@
 <?php
 //require 'edit_action.php';
 
-require 'session.php';
-require 'db.php';
-$id = 0;
-$id = $_GET['id'];
-if ($_SESSION['isadmin']!=1) {
-    if ($id != $_SESSION['analyzerid']) {
-            header('Location: edit.php?id='.$_SESSION['analyzerid']);
-        }
-  }
-$sql = "SELECT * FROM users WHERE id='".$id."'";
-$result = mysqli_query($conn, $sql);
-
-$row = mysqli_fetch_assoc($result);
-
-
-
-if (isset($_POST['enableUserBtn'])) {
-  $analyzerid = $_POST['analyzer'];
-  $isdisabled = 0;
-
-  $sql = "UPDATE users SET analyzerid = '".$analyzerid."', isdisabled = '".$isdisabled."' WHERE id = '".$id."'";
-  
-  if (mysqli_query($conn, $sql)) {
-    $isavailable=0;
-  $sqla="UPDATE analyzer SET isavailable=0 WHERE id= '".$analyzerid."'";
-    if(mysqli_query($conn, $sqla)){
-      header('Location: users_list.php?enableMsg=success'); 
+  require 'session.php';
+  require 'db.php';
+  $id = 0;
+  $id = $_GET['id'];
+  if ($_SESSION['isadmin']!=1) {
+      if ($id != $_SESSION['analyzerid']) {
+              header('Location: edit.php?id='.$_SESSION['analyzerid']);
+          }
     }
+  $sql = "SELECT * FROM users WHERE id='".$id."'";
+  $result = mysqli_query($conn, $sql);
+
+  $row = mysqli_fetch_assoc($result);
+
+
+
+  if (isset($_POST['enableUserBtn'])) {
+    $analyzerid = $_POST['analyzer'];
+    $isdisabled = 0;
+
+    $sql = "UPDATE users SET analyzerid = '".$analyzerid."', isdisabled = '".$isdisabled."' WHERE id = '".$id."'";
+    
+    if (mysqli_query($conn, $sql)) {
+      $isavailable=0;
+      $sqla="UPDATE analyzer SET isavailable=0 WHERE id= '".$analyzerid."'";
+      if(mysqli_query($conn, $sqla)){     
+        header('Location: users_list.php?enableMsg=success'); 
+        exit;
+      }
+      else {
+        header('Location: users_list.php?enableMsg=failure');
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+      }
+    } 
     else {
       header('Location: users_list.php?enableMsg=failure');
       echo "Error: " . $sql . "<br>" . mysqli_error($conn);
     }
-  } 
-  else {
-    header('Location: users_list.php?enableMsg=failure');
-    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+
   }
 
-}
- ?>
-<?php require 'header.php'; ?>
+  require 'header.php';
+
+?>
 <li class="nav-item">
       
         <a  style="width: 69px;" class="nav-link btn btn-primary" href="users_list.php">Back </a>
