@@ -263,8 +263,7 @@
                                         $sql="SELECT * FROM `bill` GROUP BY month";
                                         $result = mysqli_query($conn, $sql);
                                         while($row = mysqli_fetch_assoc($result)){
-                                            //SELECT * FROM bill WHERE month<month(now()) AND month>=month(now())-6 AND analyzerid=29 Query for last six months.
-                                            //SELECT * FROM bill b JOIN analyzer a ON b.analyzerid=a.id WHERE b.issuedate='2018-11-04' AND b.analyzerid=$_SESSION['id'] Query for bill details
+                                            
                                     ?>
                                     <tr>
                                         <td><?=$row['month']?></td>
@@ -272,7 +271,7 @@
                                         <td><?=$row['issuedate']?></td>
                                         <td><?=$row['duedate']?></td>
                                         <td><?=$row['note']?></td>
-                                        <td><a href="bill.php?issuedate=<?= $row['issuedate']?>" class="btn btn-info">Print</a></td>
+                                        <td><a href="bill.php?month=<?= $row['month']?>&year=<?= $row['year']?>" class="btn btn-info">Print</a></td>
                                     </tr>     
                                     <?php
                                         }

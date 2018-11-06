@@ -333,9 +333,9 @@ window.onload = function () {
     <!--<div id="chartContainer" style="height: 500px; width: 80%; float: right;"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
         </div>-->
-        <div id="chartContainer" style="height: 500px; width: 80%; float: right;">
+        <div id="chartContainer" style="width: 80%; float: right;">
        <label class="label label-success">Line Chart</label>
-      <div id="line-chart"></div>
+      <div id="line-chart" style="height: 200px;"></div>
       <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-primary">

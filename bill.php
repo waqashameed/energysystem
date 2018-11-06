@@ -1,7 +1,12 @@
 <?php
-//Testing
-require 'session.php';
+//SELECT * FROM bill WHERE month<month(now()) AND month>=month(now())-6 AND analyzerid=29 Query for last six months.
+//SELECT * FROM bill b JOIN analyzer a ON b.analyzerid=a.id WHERE b.issuedate='2018-11-04' AND b.analyzerid=$_SESSION['id'] Query for bill details
+require_once 'session.php';
+require_once 'db.php';
+if(isset($_GET['id']))
+{
 	$id = $_GET['id'];
+}
 if ($_SESSION['isadmin']!=1) {
     if ($id != $_SESSION['analyzerid']) {
             header('Location: bill.php?id='.$_SESSION['analyzerid']);
@@ -99,6 +104,18 @@ table, td, th {
 
 </head>
 <body style="margin-top: 20px;" onload="window.print();">
+	<?php
+	if (isset($_GET['month']) && isset($_GET['month'])) {
+		$month = $_GET['month'];
+		$year = $_GET['year'];
+	}
+		$sql="SELECT * FROM bill b JOIN analyzer a ON b.analyzerid=a.id WHERE b.month=".$month." AND b.year=".$year."";
+		if ($_SESSION['isadmin']!=1) {
+			$sql .= " AND b.analyzerid=".$_SESSION['id'];
+		}
+        $result = mysqli_query($conn, $sql);
+        while($row = mysqli_fetch_assoc($result)){
+	?>
 	<div class="container" style="background-color: #d6d8db;">
 		
 		<div class="row">
@@ -111,23 +128,23 @@ table, td, th {
 		<div class="row">
 			<div class="col-md-2">
 				<label>Connection Date</label>
-				<h4>2018-07-29</h4>
+				<h4><?=$row['creationdate']?></h4>
 			</div>
 			<div class="col-md-2">
 				<label>Bill Month</label>
-				<h4>Sep 18</h4>
+				<h4><?=$row['month'];?> <?=$row['year']?></h4>
 			</div>
 			<div class="col-md-2">
 				<label>Issue Date</label>
-				<h4><?php echo date("d/m/Y");?></h4>
+				<h4><?=$row['issuedate']?></h4>
 			</div>
 			<div class="col-md-2">
 				<label>Due Date</label>
-				<h4><?php echo date('d/m/Y', strtotime("+10 days")); ?></h4>
+				<h4><?=$row['duedate']?></h4>
 			</div>
 			<div class="col-md-2">
 				<label for="txtDateFrom" class="control-label">Consumer ID</label>
-				<h4>34</h4>
+				<h4><?=$row['analyzerid']?></h4>
 			</div>
 		</div>
 			
@@ -142,17 +159,25 @@ table, td, th {
 		                  <th scope="col">Month</th>
 		                  <th scope="col">Units</th>
 		                  <th scope="col">Bill</th>
-		                  <th scope="col">Payment</th>
 		                </tr>
 		            </thead>
 		            <tbody>
+		            	<?php
+		            	//Last Months
+		            		$sqlLM="SELECT * FROM bill WHERE month<month(now()) AND month>=month(now())-6 AND analyzerid=".$row['analyzerid']."";
+		            		echo $sqlLM;
+		            		//Problem here, phpmyadmin mai data show nae ho rha lakin bill walay page per data aa rha ha junc
+        					$resultLM = mysqli_query($conn, $sqlLM);
+        while($rowLM = mysqli_fetch_assoc($result)){
+		            	?>
 			            <tr class="table-light">
-			            	<th scope="row">SEP 17</th>
-					    	<td>232</td>
-					    	<td>21333</td>
-					    	<td>21333</td>
+			            	<th scope="row"><?=$rowLM['month']?></th>
+					    	<td><?=$rowLM['units']?></td>
+					    	<td><?=$rowLM['amount']?></td>
 			            </tr>
-			            
+			        <?php
+			        	}
+			        ?>    
 			        </tbody>
 				</table>
 			</div>
@@ -160,10 +185,8 @@ table, td, th {
 				
 			</div>
 			<div class="col-md-7">
-				<b style="color: blue;">Name & Address:</b><br>
-				<b style="background-color: #d6d8db;">Waqas Hameed</b>
-				<br>
-				<b style="background-color: #d6d8db;">Address</b>
+				<b style="color: blue;">Name:</b><br>
+				<b style="background-color: #d6d8db;"><?=$row['name']?></b>
 				
 				<br><br>
 				
@@ -178,15 +201,15 @@ table, td, th {
 		<div class="row">
 			<div class="col-md-2">
 				<label>Previous Reading</label>
-				<h4>2018</h4>
+				<h4><?=$row['prevmonthunits']?></h4>
 			</div>
 			<div class="col-md-2">
 				<label>Present Reading</label>
-				<h4>2019</h4>
+				<h4><?=$row['currentmonthunits']?></h4>
 			</div>
 			<div class="col-md-2">
 				<label>Units</label>
-				<h4>1</h4>
+				<h4><?=$row['units']?></h4>
 			</div>
 			
 		</div>
@@ -204,17 +227,17 @@ table, td, th {
 					<tbody>
 					            <tr class="table-light">
 					            	<th scope="row">Units Consumed:&nbsp;</th>
-							    	<td>232</td>
+							    	<td><?=$row['units']?></td>
 							    	
 					            </tr>
 					            <tr class="table-light">
 					            	<th scope="row">Cost of Electricity:&nbsp;</th>
-							    	<td>232</td>
+							    	<td>13</td>
 							    	
 					            </tr>
 					            <tr class="table-light">
 					            	<th scope="row">Total:&nbsp;</th>
-							    	<td>232</td>
+							    	<td><?=$row['amount']?></td>
 							    	
 					            </tr>
 					            
@@ -227,10 +250,10 @@ table, td, th {
 			</div>
 			<div class="col-md-7">
 				<b style="color: blue;">Payable within Due Date:&nbsp;</b>
-				<b style="background-color: #d6d8db;">232</b>
+				<b style="background-color: #d6d8db;"><?=$row['amount']?></b>
 				<br>
-				<b style="color: blue;">Payable within Due Date:&nbsp;</b>
-				<b style="background-color: #d6d8db;">252</b>
+				<b style="color: blue;">Payable after Due Date:&nbsp;</b>
+				<b style="background-color: #d6d8db;"><?=($row['amount']+100)?></b>
 				
 				<br><br>
 				
@@ -265,20 +288,20 @@ table, td, th {
 						</b>
 					</td>
 					<td>
-						232 (Amount Payable with due date)
+						<?=$row['amount']?> (Amount Payable with due date)
 					</td>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<td>
-						Sep 18
+						<?=$row['month']?>-<?=$row['year']?>
 					</td>
 					<td>
-						15 OCT 18
+						<?=$row['duedate']?>
 					</td>
 					<td>
-						213213131
+						<?=$row['id']?>
 					</td>
 					<td>
 						<b>
@@ -286,7 +309,7 @@ table, td, th {
 						</b>
 					</td>
 					<td>
-						252 (Amount Payable after due date)
+						<?=($row['amount']+100)?> (Amount Payable after due date)
 					</td>
 				</tr>
 			</tbody>
@@ -295,7 +318,10 @@ table, td, th {
 			
 							
 		</div>
-	</div>
+		<?php
+	}
+		?>
+	
 	<script language="VBScript">
 		// THIS VB SCRIP REMOVES THE PRINT DIALOG BOX AND PRINTS TO YOUR DEFAULT PRINTER
 		Sub window_onload()
