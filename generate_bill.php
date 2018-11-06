@@ -1,8 +1,8 @@
 <?php
     require 'session.php';
-    if ($_SESSION['isadmin']!=1) {
+    /*if ($_SESSION['isadmin']!=1) {
         header('Location: analyzers_list.php');
-    }
+    }*/
     
  ?>
 
@@ -194,15 +194,16 @@
                                 </ul>
                             
                         </li>
-                        <li class="active" id="active">
-                            <a href="generate_bill.php">
-                                <i class="livicon" data-name="home" data-size="18" data-c="#418BCA" data-hc="#418BCA" data-loop="true"></i>
-                                <span class="title">Generate Bill</span>
-                            </a>
-                        </li>
+                        
                         <?php
                             }                           
                         ?>
+                        <li class="active" id="active">
+                            <a href="generate_bill.php">
+                                <i class="livicon" data-name="home" data-size="18" data-c="#418BCA" data-hc="#418BCA" data-loop="true"></i>
+                                <span class="title">Bill</span>
+                            </a>
+                        </li>
 
 
 
@@ -223,14 +224,20 @@
                         </a>
                     </li>
                     
-                    <li class="active">Generate Bill</li>
+                    <li class="active">Bill</li>
                 </ol>
             </section>
+            <?php
+                if ($_SESSION['isadmin']!=0) {
+            ?>
                 <div class="card-header">
    
-                    <a style="float: left;" class="nav-link btn btn-info" href="generate_new_bill.php">Generate New Bill</a>
+                    <a style="float: left;" class="nav-link btn btn-info" href="generate_new_bill.php">Generate Bill</a>
 
                 </div>
+            <?php
+                }
+            ?>
                 <br>
                 <br>
             

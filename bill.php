@@ -7,11 +7,12 @@ if(isset($_GET['id']))
 {
 	$id = $_GET['id'];
 }
-if ($_SESSION['isadmin']!=1) {
+/*if ($_SESSION['isadmin']!=1) {
     if ($id != $_SESSION['analyzerid']) {
             header('Location: bill.php?id='.$_SESSION['analyzerid']);
         }
   }
+  */
 ?>
 
 <!DOCTYPE html>
@@ -108,11 +109,13 @@ table, td, th {
 	if (isset($_GET['month']) && isset($_GET['month'])) {
 		$month = $_GET['month'];
 		$year = $_GET['year'];
+		
 	}
 		$sql="SELECT * FROM bill b JOIN analyzer a ON b.analyzerid=a.id WHERE b.month=".$month." AND b.year=".$year."";
 		if ($_SESSION['isadmin']!=1) {
-			$sql .= " AND b.analyzerid=".$_SESSION['id'];
+			$sql .= " AND b.analyzerid=".$_SESSION['analyzerid'];
 		}
+		
         $result = mysqli_query($conn, $sql);
         while($row = mysqli_fetch_assoc($result)){
 	?>
@@ -165,10 +168,10 @@ table, td, th {
 		            	<?php
 		            	//Last Months
 		            		$sqlLM="SELECT * FROM bill WHERE month<month(now()) AND month>=month(now())-6 AND analyzerid=".$row['analyzerid']."";
-		            		echo $sqlLM;
+		            		
 		            		//Problem here, phpmyadmin mai data show nae ho rha lakin bill walay page per data aa rha ha junc
         					$resultLM = mysqli_query($conn, $sqlLM);
-        while($rowLM = mysqli_fetch_assoc($result)){
+        while($rowLM = mysqli_fetch_assoc($resultLM)){
 		            	?>
 			            <tr class="table-light">
 			            	<th scope="row"><?=$rowLM['month']?></th>

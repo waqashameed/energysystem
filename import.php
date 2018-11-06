@@ -5,7 +5,7 @@ if(isset($_GET["submit"])){
 $filename=explode(".", $_FILES['file']['name']);
         if($filename[1]=='csv')
         {
-          $handle = fopen("C:\xampp\htdocs\energysystem\Report.csv", "r");
+          $handle = fopen($_FILES['file']['tmp_name'], "r");
         }
 $row = 1;
 //if (($handle = fopen("test.csv", "r")) !== FALSE) {

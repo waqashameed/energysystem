@@ -193,16 +193,16 @@
                                 </ul>
                             
                         </li>
-                        <li>
-                            <a href="generate_bill.php">
-                                <i class="livicon" data-name="doc-portrait" data-size="18" data-c="#418BCA" data-hc="#418BCA" data-loop="true"></i>
-                                <span class="title">Generate Bill</span>
-                            </a>
-                        </li>
+                        
                         <?php
                             }                           
                         ?>
-
+                        <li>
+                            <a href="generate_bill.php">
+                                <i class="livicon" data-name="doc-portrait" data-size="18" data-c="#418BCA" data-hc="#418BCA" data-loop="true"></i>
+                                <span class="title">Bill</span>
+                            </a>
+                        </li>
 
 
                     </ul>

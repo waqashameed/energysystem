@@ -364,7 +364,7 @@ $result = mysqli_query($conn, $sql);
                                 <tbody>
                                     <?php foreach($analyzerDetails as $analyzerD): ?>
                                       <tr>
-                                        <td style="text-align: center;"><?= $analyzerD->dateOnly; ?></td>
+                                        <td style="text-align: center;" nowrap="nowrap"><?= $analyzerD->dateOnly; ?></td>
                                         <td style="text-align: center;"><?= $analyzerD->monthnumber; ?></td>
                                         <td style="text-align: center;"><?= $analyzerD->valueunits; ?></td>
                                   

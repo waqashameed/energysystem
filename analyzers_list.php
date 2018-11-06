@@ -156,6 +156,13 @@
                                     </a>
                                 </li>
                                 
+                                <li>
+                                    <a href="generate_bill.php">
+                                    <i class="fa fa-angle-double-right"></i>
+                                        Bill
+                                </a>
+                                </li>
+                                
                                 <?php
                                         if ($_SESSION['isadmin']!=0) {
                                             
@@ -200,12 +207,7 @@
                                 </ul>
                             
                         </li>
-                        <li>
-                            <a href="generate_bill.php">
-                                <i class="livicon" data-name="doc-portrait" data-size="18" data-c="#418BCA" data-hc="#418BCA" data-loop="true"></i>
-                                <span class="title">Generate Bill</span>
-                            </a>
-                        </li>
+                        
                         <?php
                             }                           
                         ?>
@@ -246,11 +248,8 @@
 
                 </div>
                 <div class="card-header">
-                    <form method="get" action="import.php">
-        
-                        <input type="submit" name="submit" value="Refresh CSV">
-                    </form>
-                   <!--<a style="float: left;" class="nav-link btn btn-primary" href="import.php">Refresh CSV</a>-->
+                    
+                   <a style="float: left;" class="nav-link btn btn-primary" href="import.php">Refresh CSV</a>
                 </div>
             <?php
                 }
@@ -353,7 +352,6 @@
                                             
                                             <a href="report.php?id=<?= $analyzer->id ?>" class="btn btn-primary">Report</a>
                                             <a href="form_examples.php?id=<?= $analyzer->id ?>" class="btn btn-primary">Graph</a>
-                                            <a href="bill.php?id=<?= $analyzer->id ?>" class="btn btn-primary">Print Bill</a>
                                         </td>
                                       </tr>
                                     <?php endforeach; ?>                                 
